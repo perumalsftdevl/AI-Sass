@@ -16,7 +16,7 @@ import {
   ChatCompletion,
   CreateChatCompletionRequestMessage,
 } from "openai/resources/index.mjs";
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const [message, setmessage] = useState<CreateChatCompletionRequestMessage[]>(
     []
@@ -109,4 +109,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
