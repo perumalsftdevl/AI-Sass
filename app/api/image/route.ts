@@ -1,6 +1,8 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
+import { checkSubscription } from "@/lib/subscription";
+import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 
 const openai = new OpenAI({
   apiKey: process.env.OPEN_API_KEY,
@@ -20,6 +22,16 @@ export async function POST(req: Request) {
       return new NextResponse("Prompt is required", { status: 400 });
     }
 
+    const freeTrial = await checkApiLimit();
+    const isPro = await checkSubscription();
+
+    if (!freeTrial && !isPro) {
+      return new NextResponse(
+        "Free trial has expired. Please upgrade to pro.",
+        { status: 403 }
+      );
+    }
+
     // if (typeof amount !== "number" || amount < 1) {
     //   return new NextResponse("Amount should be a positive number", {
     //     status: 400,
@@ -34,7 +46,9 @@ export async function POST(req: Request) {
       size: resolution,
       quality: "hd",
     });
-
+    if (!isPro) {
+      await incrementApiLimit();
+    }
     // Assuming response is always an array and contains at least one item
     return NextResponse.json(response.data);
   } catch (error) {
