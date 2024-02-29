@@ -49,7 +49,7 @@ export async function GET() {
               name: "All Known Pro",
               description: "Unlimited AI Generations",
             },
-            unit_amount: 111,
+            unit_amount: 99999,
             recurring: {
               interval: "month",
             },
