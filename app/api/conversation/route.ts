@@ -40,7 +40,7 @@ export async function POST(req: any) {
     }
     const response = await openai.chat.completions.create({
       messages: messages,
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
     });
     if (!isPro) {
       await incrementApiLimit();

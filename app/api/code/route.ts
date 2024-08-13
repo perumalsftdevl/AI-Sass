@@ -46,7 +46,7 @@ export async function POST(req: any) {
     }
 
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
       messages: [instructionMessage, ...messages],
     });
     if (!isPro) {
